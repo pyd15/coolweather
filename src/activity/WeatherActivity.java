@@ -54,6 +54,8 @@ public class WeatherActivity extends Activity {
 	private ScrollView weatherLayout;
 
 	private Button navButton;
+	
+	private Button switchButton;
 
 	private TextView titleCity;
 
@@ -84,6 +86,7 @@ public class WeatherActivity extends Activity {
 	private ProgressDialog progressDialog;
 
 	private String mWeatherId;
+	private String WeatherId;
 
 	// private int mWeatherId;
 
@@ -114,31 +117,34 @@ public class WeatherActivity extends Activity {
 		sportText = (TextView) findViewById(R.id.sport_text);
 		travelText = (TextView) findViewById(R.id.travel_text);
 		dressText = (TextView) findViewById(R.id.dress_text);
-		// swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-		// swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+		swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+		switchButton=(Button)findViewById(R.id.change_city);
+//		swipeRefresh.setColorSchemeResources(R.color.holo_blue_bright,
+//				0, 0, 0);
 		// drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		// navButton = (Button) findViewById(R.id.nav_button);
+//		String weatherId = getIntent().getStringExtra("weather_id");
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		String weatherString = prefs.getString("weather", null);
-		if (weatherString != null) {
-			// 有缓存时直接解析天气数据
-			Weather weather = Utility.handleWeatherResponse(weatherString);
-			mWeatherId = weather.basic.weatherId;
-			showWeatherInfo(weather);
-		} else {
+//		if (weatherString != null) {
+//			// 有缓存时直接解析天气数据
+//			Weather weather = Utility.handleWeatherResponse(weatherString);
+//			WeatherId = weather.basic.weatherId;
+//			showWeatherInfo(weather);
+//		} else {
 			// 无缓存时去服务器查询天气
 			mWeatherId = getIntent().getStringExtra("weather_id");
-			weatherLayout.setVisibility(View.INVISIBLE);
+			weatherLayout.setVisibility(View.INVISIBLE);// 查询到数据前先隐藏scrollview
 			requestWeather(mWeatherId);
-		}
-		// swipeRefresh.setOnRefreshListener(new
-		// SwipeRefreshLayout.OnRefreshListener() {
-		// @Override
-		// public void onRefresh() {
-		// requestWeather(mWeatherId);
-		// }
-		// });
+//		}
+		swipeRefresh
+				.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+					@Override
+					public void onRefresh() {
+						requestWeather(mWeatherId);
+					}
+				});
 		// navButton.setOnClickListener(new View.OnClickListener() {
 		// @Override
 		// public void onClick(View v) {
@@ -151,6 +157,25 @@ public class WeatherActivity extends Activity {
 		// } else {
 		// loadBingPic();
 		// }
+		
+		switchButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				switch (v.getId()) {
+				case R.id.change_city:
+					Intent intent=new Intent(WeatherActivity.this,ChooseAreaActivity.class);
+					intent.putExtra("from WeatherActivity", true);
+					startActivity(intent);
+					finish();
+					break;
+
+				default:
+					break;
+				}
+			}
+		});
 	}
 
 	/**
@@ -167,24 +192,26 @@ public class WeatherActivity extends Activity {
 			@Override
 			public void onFinish(String response) {
 				// TODO Auto-generated method stub
-				final String responseText=response;
-				final Weather weather = Utility.handleWeatherResponse(responseText);
+				final String responseText = response;
+				final Weather weather = Utility
+						.handleWeatherResponse(responseText);
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						closeProgressDialog();
-						//status=ok则说明请求天气数据成功
-						 if (weather != null && "ok".equals(weather.status)) {
-						 SharedPreferences.Editor editor =
-						 PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-						 editor.putString("weather",responseText );
-						 editor.apply();
-						showWeatherInfo(weather);
-						 } else {
-						 Toast.makeText(WeatherActivity.this, "获取天气信息失败",
-						 Toast.LENGTH_SHORT).show();
-						 }
-						// swipeRefresh.setRefreshing(false);
+						// status=ok则说明请求天气数据成功
+						if (weather != null && "ok".equals(weather.status)) {
+							SharedPreferences.Editor editor = PreferenceManager
+									.getDefaultSharedPreferences(
+											WeatherActivity.this).edit();
+							editor.putString("weather", responseText);
+							editor.apply();
+							showWeatherInfo(weather);
+						} else {
+							Toast.makeText(WeatherActivity.this, "获取天气信息失败",
+									Toast.LENGTH_SHORT).show();
+						}
+						 swipeRefresh.setRefreshing(false);
 					}
 				});
 			}
@@ -192,13 +219,14 @@ public class WeatherActivity extends Activity {
 			@Override
 			public void onError(Exception e) {
 				// TODO Auto-generated method stub
-			    runOnUiThread(new Runnable() {
-					
+				runOnUiThread(new Runnable() {
+
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
 						Toast.makeText(WeatherActivity.this, "获取天气信息失败",
-								 Toast.LENGTH_SHORT).show();
+								Toast.LENGTH_SHORT).show();
+						swipeRefresh.setRefreshing(false);
 					}
 				});
 			}
@@ -258,7 +286,7 @@ public class WeatherActivity extends Activity {
 		if (weather.aqi != null) {
 			aqiText.setText(weather.aqi.city.aqi);
 			pm25Text.setText(weather.aqi.city.pm25);
-		}else {
+		} else {
 			aqiText.setText("无");
 			pm25Text.setText("无");
 		}
@@ -292,18 +320,18 @@ public class WeatherActivity extends Activity {
 		}
 	}
 
-//	@Override
-//	public void onBackPressed() {
-//		// TODO Auto-generated method stub
-//		finish();
-//		Intent intent = new Intent(this, ChooseAreaActivity.class);
-////		if (currentLevel==LEVEL_COUNTY) {
-////			.queryCities();
-////		}else if (currentLevel==LEVEL_CITY) {
-////			queryProvinces();
-////		}else {
-////			finish();
-////		}
-//		startActivity(intent);
-//	}
+	// @Override
+	// public void onBackPressed() {
+	// // TODO Auto-generated method stub
+	// finish();
+	// Intent intent = new Intent(this, ChooseAreaActivity.class);
+	// // if (currentLevel==LEVEL_COUNTY) {
+	// // .queryCities();
+	// // }else if (currentLevel==LEVEL_CITY) {
+	// // queryProvinces();
+	// // }else {
+	// // finish();
+	// // }
+	// startActivity(intent);
+	// }
 }

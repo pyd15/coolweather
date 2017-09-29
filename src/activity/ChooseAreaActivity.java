@@ -77,17 +77,17 @@ public class ChooseAreaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//		if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
-//			Intent intent = new Intent(this, WeatherActivity.class);
-//			startActivity(intent);
-//			finish();
-//			return;
-//		}
-		if (prefs.getString("weather", null)!=null) {
-			Intent intent=new Intent(this,WeatherActivity.class);
+		if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
+			Intent intent = new Intent(this, WeatherActivity.class);
 			startActivity(intent);
-//			finish();
+			finish();
+			return;
 		}
+//		if (prefs.getString("weather", null)!=null) {
+//			Intent intent=new Intent(this,WeatherActivity.class);
+//			startActivity(intent);
+////			finish();
+//		}
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_area);
 		listView = (ListView) findViewById(R.id.list_view);
@@ -108,7 +108,6 @@ public class ChooseAreaActivity extends Activity {
 					selectedCity = cityList.get(position);
 					queryCounties();
 				} else if (currentLevel == LEVEL_COUNTY) {
-					int countyCode = countyList.get(position).getCountyCode();
 					String weatherId=countyList.get(position).getWeatherId();
 					Log.d("weatherId", weatherId);
 					Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
