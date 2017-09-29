@@ -134,7 +134,7 @@ public class WeatherActivity extends Activity {
 		if (weatherString != null&&isFromChooseActivity) {
 			// 有缓存时直接解析天气数据
 			Weather weather = Utility.handleWeatherResponse(weatherString);
-			WeatherId = weather.basic.weatherId;
+			mWeatherId = weather.basic.weatherId;
 			showWeatherInfo(weather);
 		} else {
 			// 无缓存时去服务器查询天气
@@ -174,7 +174,7 @@ public class WeatherActivity extends Activity {
 					startActivity(intent);
 					finish();
 					break;
-
+				
 				default:
 					break;
 				}
@@ -209,6 +209,7 @@ public class WeatherActivity extends Activity {
 									.getDefaultSharedPreferences(
 											WeatherActivity.this).edit();
 							editor.putString("weather", responseText);
+							editor.putString("weatherId", weatherId);
 							editor.apply();
 							showWeatherInfo(weather);
 						} else {

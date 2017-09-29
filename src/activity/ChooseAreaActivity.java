@@ -71,12 +71,15 @@ public class ChooseAreaActivity extends Activity {
 	 * 是否从WeatherActivity中跳转过来。
 	 */
 	private boolean isFromWeatherActivity;
+	
+	private String weatherId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		isFromWeatherActivity = getIntent().getBooleanExtra("from WeatherActivity", false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		weatherId=prefs.getString("weatherId", "CN101010100");
 		if ((prefs.getString("weather","") !=null)&& !isFromWeatherActivity) {
 			Intent intent = new Intent(this, WeatherActivity.class);
 			intent.putExtra("from ChooseActivity", true);
@@ -112,7 +115,6 @@ public class ChooseAreaActivity extends Activity {
 					String weatherId=countyList.get(position).getWeatherId();
 					Log.d("weatherId", weatherId);
 					Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
-//					intent.putExtra("county_code", countyCode);
 					intent.putExtra("weather_id", weatherId);
 					startActivity(intent);
 //					finish();
