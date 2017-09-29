@@ -75,10 +75,11 @@ public class ChooseAreaActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
+		isFromWeatherActivity = getIntent().getBooleanExtra("from WeatherActivity", false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
+		if ((prefs.getString("weather","") !=null)&& !isFromWeatherActivity) {
 			Intent intent = new Intent(this, WeatherActivity.class);
+			intent.putExtra("from ChooseActivity", true);
 			startActivity(intent);
 			finish();
 			return;
