@@ -3,7 +3,7 @@ package model;
 public class City {
 	private int id;
 	private String cityname;
-	private String cityCode;
+	private int cityCode;
 	private int provinceId;
 	
 	
@@ -25,10 +25,16 @@ public class City {
 	public void setCityname(String cityname) {
 		this.cityname = cityname;
 	}
-	public String getCityCode() {
+//	public String getCityCode() {
+//		return cityCode;
+//	}
+//	public void setCityCode(String cityCode) {
+//		this.cityCode = cityCode;
+//	}
+	public int getCityCode() {
 		return cityCode;
 	}
-	public void setCityCode(String cityCode) {
+	public void setCityCode(int cityCode) {
 		this.cityCode = cityCode;
 	}
 }
