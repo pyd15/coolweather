@@ -4,11 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-	<RelativeLayout 
+	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="50dp"
-	    android:background="#484E61"
-	    >
+	    android:background="#8B7D6B" >
 	    
 	    <TextView 
 	        android:id="@+id/title_text"

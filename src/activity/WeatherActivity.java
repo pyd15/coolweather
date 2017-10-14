@@ -147,20 +147,9 @@ public class WeatherActivity extends Activity {
 					@Override
 					public void onRefresh() {
 						requestWeather(mWeatherId);
+						Toast.makeText(WeatherActivity.this, "刷新成功！", Toast.LENGTH_SHORT).show();
 					}
 				});
-		// navButton.setOnClickListener(new View.OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// drawerLayout.openDrawer(GravityCompat.START);
-		// }
-		// });
-		// String bingPic = prefs.getString("bing_pic", null);
-		// if (bingPic != null) {
-		// Glide.with(this).load(bingPic).into(bingPicImg);
-		// } else {
-		// loadBingPic();
-		// }
 		
 		switchButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -281,11 +270,11 @@ public class WeatherActivity extends Activity {
 			TextView dateText = (TextView) view.findViewById(R.id.date_text);
 			TextView infoText = (TextView) view.findViewById(R.id.info_text);
 			TextView maxText = (TextView) view.findViewById(R.id.max_text);
-			TextView minText = (TextView) view.findViewById(R.id.min_text);
+//			TextView minText = (TextView) view.findViewById(R.id.min_text);
 			dateText.setText(forecast.date);
 			infoText.setText(forecast.more.info);
-			maxText.setText(forecast.temperature.max);
-			minText.setText(forecast.temperature.min);
+			maxText.setText(forecast.temperature.min+"℃~"+forecast.temperature.max+"℃");
+//			minText.setText(forecast.temperature.min+"℃");
 			forecastLayout.addView(view);
 		}
 		if (weather.aqi != null) {
@@ -314,6 +303,7 @@ public class WeatherActivity extends Activity {
 		if (progressDialog == null) {
 			progressDialog = new ProgressDialog(this);
 			progressDialog.setMessage("正在加载...");
+			progressDialog.setTitle("请稍候");
 			progressDialog.setCanceledOnTouchOutside(false);
 		}
 		progressDialog.show();
@@ -325,18 +315,4 @@ public class WeatherActivity extends Activity {
 		}
 	}
 
-	// @Override
-	// public void onBackPressed() {
-	// // TODO Auto-generated method stub
-	// finish();
-	// Intent intent = new Intent(this, ChooseAreaActivity.class);
-	// // if (currentLevel==LEVEL_COUNTY) {
-	// // .queryCities();
-	// // }else if (currentLevel==LEVEL_CITY) {
-	// // queryProvinces();
-	// // }else {
-	// // finish();
-	// // }
-	// startActivity(intent);
-	// }
 }

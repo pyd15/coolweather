@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
-    android:background="#8000"
+    android:background="@drawable/round"
     android:orientation="vertical" >
+    <!-- #8000 -->
     
 	<TextView 
 	    android:layout_width="wrap_content"
@@ -56,12 +57,13 @@
 	    <RelativeLayout 
 	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="1"
+	        android:layout_weight="2"
 	        >
 	        <LinearLayout 
 	            android:orientation="vertical"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
+	            android:layout_marginRight="50dp"
 	            android:layout_centerInParent="true"
 	            >
 	            <TextView 
@@ -69,7 +71,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center"
-	                android:background="#fff"
+	                android:textColor="#ffffff"
 	                android:textSize="40sp"
 	                />
 	            <TextView 

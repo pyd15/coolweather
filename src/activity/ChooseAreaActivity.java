@@ -27,6 +27,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class ChooseAreaActivity extends Activity {
 	private ProgressDialog progressDialog;
 	private TextView titleText;
 	private ListView listView;
+	private Button backbButton;
 	private ArrayAdapter<String> adapter;
 	private CoolWeatherDBHelper coolWeatherDBHelper;
 	private List<String> dataList=new ArrayList<String>();
@@ -79,8 +81,8 @@ public class ChooseAreaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		isFromWeatherActivity = getIntent().getBooleanExtra("from WeatherActivity", false);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		weatherId=prefs.getString("weatherId", "CN101010100");
-		if ((prefs.getString("weather","") !=null)&& !isFromWeatherActivity) {
+//		weatherId=prefs.getString("weatherId", "CN101010100");
+		if ((prefs.getString("weather",null) !=null)&&! isFromWeatherActivity) {
 			Intent intent = new Intent(this, WeatherActivity.class);
 			intent.putExtra("from ChooseActivity", true);
 			startActivity(intent);
@@ -95,6 +97,7 @@ public class ChooseAreaActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_area);
 		listView = (ListView) findViewById(R.id.list_view);
+//		backbButton=(Button)findViewById(R.id.back);
 		titleText = (TextView) findViewById(R.id.title_text);
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataList);
 		listView.setAdapter(adapter);
@@ -121,6 +124,7 @@ public class ChooseAreaActivity extends Activity {
 				}
 			}
 		});
+		
 		queryProvinces();  // 加载省级数据
 	}
 
@@ -197,7 +201,7 @@ public class ChooseAreaActivity extends Activity {
 	 * 根据传入的地址和类型从服务器上查询省市县数据
 	 */
 	private void queryFromServer(String address,final String type) {
-		Toast.makeText(this, "From Server", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "From Server", Toast.LENGTH_SHORT).show();
 		showProgressDialog();
 		HttpUtil.sendHttpRequest(address, new HttpCallBackListener() {
 			@Override
